@@ -1,0 +1,73 @@
+# =============================================================================
+# render.yaml  —  Render.com Blueprint
+# Deploys:
+#   - backend  : FastAPI + Uvicorn (Python 3.13, SQLite in dev / PostgreSQL in prod)
+#   - frontend : Static React SPA served by Render's CDN
+# =============================================================================
+
+services:
+  # ── Backend (FastAPI) ──────────────────────────────────────────────────────
+  - type: web
+    name: skillpath-backend
+    runtime: python
+    region: singapore          # closest to India
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13"
+      - key: SECRET_KEY
+        generateValue: true          # Render auto-generates a secure random value
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      # SQLite (built-in, no extra service needed on free tier)
+      - key: DATABASE_URL
+        value: sqlite:///./livelihood_ai.db
+      # CORS — update after frontend URL is known
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: MOCK_EXTERNAL_SERVICES
+        value: "false"
+      - key: DEFAULT_LANGUAGE
+        value: en
+      # ── Set these manually in Render dashboard → Environment ──────────────
+      - key: GEMINI_API_KEY
+        sync: false                  # prompts you to fill in the Render dashboard
+      # Redis is optional (in-memory fallback used if blank)
+      - key: REDIS_URL
+        value: ""
+
+  # ── Frontend (Static Site) ─────────────────────────────────────────────────
+  - type: web
+    name: skillpath-frontend
+    runtime: static
+    region: singapore
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+    routes:
+      # SPA fallback — all routes serve index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # Leave empty — frontend calls /api/v1 which we'll redirect below
+      - key: VITE_API_URL
+        sync: false                  # set to https://skillpath-backend.onrender.com in dashboard

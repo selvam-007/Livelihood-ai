@@ -1,0 +1,21 @@
+{
+  "short_name": "SkillPath AI",
+  "name": "SkillPath AI - NSQF Career & Livelihood Intelligence",
+  "icons": [
+    {
+      "src": "/pwa-192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/pwa-512.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "display": "standalone",
+  "orientation": "portrait"
+}

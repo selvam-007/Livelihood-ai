@@ -1,0 +1,9 @@
+# Backend secrets and artifacts
+.env
+*.env
+!.env.example
+*.db
+*.sqlite3
+__pycache__/
+*.pyc
+.pytest_cache/
