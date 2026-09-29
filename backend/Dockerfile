@@ -34,8 +34,8 @@ RUN useradd --create-home --shell /bin/bash appuser \
     && chown -R appuser:appuser /app
 USER appuser
 
-# Apply DB migrations then start the API server
-# ENTRYPOINT runs migrations on every container start (idempotent with Alembic)
+# Expose default port (Render overrides via $PORT env var)
 EXPOSE 8000
 
-CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2"]
+# Start the API server — tables are created at startup via SQLAlchemy create_all in app lifespan
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
