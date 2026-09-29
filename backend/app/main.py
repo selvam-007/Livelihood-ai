@@ -134,7 +134,20 @@ limiter = _build_limiter()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("LivelihoodAI starting — schema is managed by Alembic (run `alembic upgrade head`).")
+    # Ensure all SQLAlchemy model tables exist (idempotent — safe to run always).
+    # Alembic manages catalog/scheme tables; create_all handles user/profile/progress tables.
+    from app.database.base import Base
+    import app.models.user      # noqa: F401
+    import app.models.profile   # noqa: F401
+    import app.models.progress  # noqa: F401
+    import app.models.otp       # noqa: F401
+    import app.models.provider  # noqa: F401
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("SQLAlchemy create_all completed — all model tables are ready.")
+    except Exception as exc:
+        logger.warning(f"create_all encountered an issue (non-fatal): {exc}")
+    logger.info("LivelihoodAI starting — catalog schema managed by Alembic.")
     yield
     logger.info("LivelihoodAI shutting down.")
 
