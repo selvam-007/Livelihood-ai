@@ -114,40 +114,40 @@ export default function TopNavbar({
             <span>NSQF Aligned</span>
           </div>
 
-          {/* Language Selector Dropdown - Clean and Reliable Popover */}
+          {/* Language Selector Dropdown - Dark Theme Solid Popover */}
           <div className="relative" ref={langRef}>
             <button
               onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition shadow-xs hover:border-slate-300 group"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-700/80 bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-white transition shadow-sm hover:border-slate-600 group"
               title="Select Language (11 Indian Languages)"
             >
-              <div className="w-5 h-5 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-105 transition">
+              <div className="w-5 h-5 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-105 transition">
                 <Globe className="w-3.5 h-3.5" />
               </div>
               <div className="flex items-baseline gap-1 text-left">
-                <span className="font-bold text-slate-800 text-xs">
+                <span className="font-bold text-white text-xs">
                   {currentLanguage.nativeName || currentLanguage.native || 'English'}
                 </span>
                 <span className="text-[10px] text-slate-400 hidden sm:inline">
                   ({currentLanguage.label || currentLanguage.name || 'EN'})
                 </span>
               </div>
-              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isLangOpen ? 'rotate-180 text-blue-600' : ''}`} />
+              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isLangOpen ? 'rotate-180 text-blue-400' : ''}`} />
             </button>
 
             {isLangOpen && (
-              <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white border border-slate-300 rounded-2xl shadow-2xl p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150 ring-1 ring-black/10">
-                <div className="px-3 py-2 border-b border-slate-200 bg-white flex items-center justify-between rounded-t-xl">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
-                    <Globe className="w-3.5 h-3.5 text-blue-600" />
+              <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-slate-900 border border-slate-700/90 rounded-2xl shadow-2xl p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150 ring-1 ring-white/10">
+                <div className="px-3 py-2 border-b border-slate-800 bg-slate-900 flex items-center justify-between rounded-t-xl">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-white">
+                    <Globe className="w-3.5 h-3.5 text-blue-400" />
                     <span>Select Language / மொழி தேர்வு</span>
                   </div>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 font-semibold border border-blue-800/60">
                     11 Indic Models
                   </span>
                 </div>
 
-                <div className="max-h-72 overflow-y-auto py-1.5 space-y-1 mt-1 pr-1 custom-scroll bg-white">
+                <div className="max-h-72 overflow-y-auto py-1.5 space-y-1 mt-1 pr-1 custom-scroll bg-slate-900">
                   {supportedLanguages.map((l) => {
                     const isSelected = lang === l.code;
                     return (
@@ -160,22 +160,22 @@ export default function TopNavbar({
                         }}
                         className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs text-left transition-all ${
                           isSelected
-                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-md'
-                            : 'text-slate-800 bg-white hover:bg-slate-100 hover:text-slate-950 font-medium'
+                            ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 text-white font-semibold shadow-md shadow-blue-900/40 ring-1 ring-blue-400/40'
+                            : 'text-slate-200 bg-slate-900 hover:bg-slate-800/90 hover:text-white font-medium border border-transparent hover:border-slate-700/60'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
                           <span className="text-sm select-none">{l.flag || '🇮🇳'}</span>
                           <div>
                             <div className="flex items-center gap-1.5">
-                              <span className={`font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                              <span className={`font-bold ${isSelected ? 'text-white' : 'text-slate-100'}`}>
                                 {l.nativeName || l.native}
                               </span>
-                              <span className={`text-[11px] ${isSelected ? 'text-blue-100' : 'text-slate-500'}`}>
+                              <span className={`text-[11px] ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
                                 ({l.label || l.name})
                               </span>
                             </div>
-                            <span className={`text-[10px] block ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
+                            <span className={`text-[10px] block ${isSelected ? 'text-blue-200/80' : 'text-slate-500'}`}>
                               {l.region}
                             </span>
                           </div>

@@ -170,7 +170,7 @@ export default function Header({ backendHealth, loadingHealth, onTriggerVoiceMod
               </button>
 
               {isLangMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 max-h-80 overflow-y-auto rounded-xl bg-slate-900 border border-slate-700 shadow-2xl z-50 py-1.5 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
+                <div className="absolute right-0 mt-2 w-64 max-h-80 overflow-y-auto rounded-xl bg-slate-900 border border-slate-700 shadow-2xl z-50 py-1.5 animate-in fade-in zoom-in-95 duration-150">
                   <div className="px-3 py-1.5 border-b border-slate-800 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
                     <span>Select Indian Language</span>
                     <span className="text-brand-400 font-mono">11 Locales</span>
