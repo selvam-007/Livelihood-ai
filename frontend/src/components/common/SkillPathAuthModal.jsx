@@ -131,11 +131,14 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
     setLoading(true);
 
     try {
+      const cleanIdentifier = (emailOrPhone || '').trim();
+      const isEmail = cleanIdentifier.includes('@');
       if (mode === 'login') {
-        await loginWithCredentials(emailOrPhone, password);
+        await loginWithCredentials(cleanIdentifier, password);
       } else {
         await registerWithCredentials({
-          email: emailOrPhone,
+          email: isEmail ? cleanIdentifier : undefined,
+          phone: !isEmail ? cleanIdentifier : undefined,
           password: password,
           full_name: fullName || 'Candidate User',
           role: 'candidate'

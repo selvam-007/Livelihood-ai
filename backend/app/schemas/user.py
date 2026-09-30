@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, EmailStr, Field, ConfigDict, model_validator
 
 
 class UserBase(BaseModel):
@@ -22,11 +22,35 @@ class UserCreate(BaseModel):
     preferred_language: Optional[str] = "en"
     location: Optional[str] = None
 
+    @model_validator(mode="before")
+    @classmethod
+    def check_email_or_phone(cls, values: Any) -> Any:
+        if isinstance(values, dict):
+            email = values.get("email")
+            phone = values.get("phone")
+            if email and "@" not in str(email):
+                if not phone:
+                    values["phone"] = str(email).strip()
+                values["email"] = None
+        return values
+
 
 class UserLogin(BaseModel):
     email: Optional[EmailStr] = None
     phone: Optional[str] = None
     password: str
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_email_or_phone(cls, values: Any) -> Any:
+        if isinstance(values, dict):
+            email = values.get("email")
+            phone = values.get("phone")
+            if email and "@" not in str(email):
+                if not phone:
+                    values["phone"] = str(email).strip()
+                values["email"] = None
+        return values
 
 
 class SendOTPRequest(BaseModel):

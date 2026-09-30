@@ -14,6 +14,7 @@ Key production features implemented here:
 import time
 import logging
 import json
+import re
 from contextlib import asynccontextmanager
 from typing import Optional
 
@@ -181,8 +182,16 @@ app.add_middleware(
 
 
 # ---------------------------------------------------------------------------
-# Request logging + unhandled exception middleware
+# Path normalization & request logging middleware
 # ---------------------------------------------------------------------------
+
+@app.middleware("http")
+async def path_normalization_middleware(request: Request, call_next):
+    raw_path = request.scope.get("path", "")
+    if "//" in raw_path:
+        request.scope["path"] = re.sub(r"/+", "/", raw_path)
+    return await call_next(request)
+
 
 @app.middleware("http")
 async def logging_middleware(request: Request, call_next):
