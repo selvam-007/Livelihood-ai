@@ -114,14 +114,14 @@ export default function TopNavbar({
             <span>NSQF Aligned</span>
           </div>
 
-          {/* Language Selector Dropdown - Dark Theme Solid Popover */}
+          {/* Language Selector Dropdown - Midnight Navy Theme Solid Popover */}
           <div className="relative" ref={langRef}>
             <button
               onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-700/80 bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-white transition shadow-sm hover:border-slate-600 group"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-700/80 bg-[#0c1026] hover:bg-[#13193a] text-xs font-semibold text-white transition shadow-sm hover:border-blue-500/50 group"
               title="Select Language (11 Indian Languages)"
             >
-              <div className="w-5 h-5 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-105 transition">
+              <div className="w-5 h-5 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-105 transition border border-blue-500/30">
                 <Globe className="w-3.5 h-3.5" />
               </div>
               <div className="flex items-baseline gap-1 text-left">
@@ -136,18 +136,18 @@ export default function TopNavbar({
             </button>
 
             {isLangOpen && (
-              <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-slate-900 border border-slate-700/90 rounded-2xl shadow-2xl p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150 ring-1 ring-white/10">
-                <div className="px-3 py-2 border-b border-slate-800 bg-slate-900 flex items-center justify-between rounded-t-xl">
+              <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-[#0c1026] border border-[#1e2954] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150 ring-1 ring-blue-500/20">
+                <div className="px-3 py-2 border-b border-[#1b2347] bg-[#090d1e] flex items-center justify-between rounded-t-xl">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-white">
                     <Globe className="w-3.5 h-3.5 text-blue-400" />
                     <span>Select Language / மொழி தேர்வு</span>
                   </div>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 font-semibold border border-blue-800/60">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 font-semibold border border-blue-700/40">
                     11 Indic Models
                   </span>
                 </div>
 
-                <div className="max-h-72 overflow-y-auto py-1.5 space-y-1 mt-1 pr-1 custom-scroll bg-slate-900">
+                <div className="max-h-72 overflow-y-auto py-1.5 space-y-1 mt-1 pr-1 custom-scroll bg-[#0c1026]">
                   {supportedLanguages.map((l) => {
                     const isSelected = lang === l.code;
                     return (
@@ -160,8 +160,8 @@ export default function TopNavbar({
                         }}
                         className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs text-left transition-all ${
                           isSelected
-                            ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 text-white font-semibold shadow-md shadow-blue-900/40 ring-1 ring-blue-400/40'
-                            : 'text-slate-200 bg-slate-900 hover:bg-slate-800/90 hover:text-white font-medium border border-transparent hover:border-slate-700/60'
+                            ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 text-white font-semibold shadow-md shadow-blue-900/60 ring-1 ring-blue-400/50'
+                            : 'text-slate-200 bg-[#0c1026] hover:bg-[#141b3d] hover:text-white font-medium border border-transparent hover:border-[#222e61]'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
