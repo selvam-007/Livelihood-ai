@@ -109,6 +109,9 @@ export function AuthProvider({ children }) {
     if (email && email.toLowerCase() === 'admin@livelihood.ai' && user.role !== 'admin') {
       user.role = 'admin';
     }
+    localStorage.setItem('livelihood_token', res.data.access_token);
+    localStorage.setItem('livelihood_user', JSON.stringify(user));
+    localStorage.setItem('livelihood_role', user.role);
     setToken(res.data.access_token);
     setCurrentUser(user);
     setCurrentRole(user.role);
@@ -121,6 +124,9 @@ export function AuthProvider({ children }) {
       otp,
       ...optionalData
     });
+    localStorage.setItem('livelihood_token', res.data.access_token);
+    localStorage.setItem('livelihood_user', JSON.stringify(res.data.user));
+    localStorage.setItem('livelihood_role', res.data.user.role);
     setToken(res.data.access_token);
     setCurrentUser(res.data.user);
     setCurrentRole(res.data.user.role);
@@ -129,6 +135,9 @@ export function AuthProvider({ children }) {
 
   const registerWithCredentials = async (userData) => {
     const res = await apiClient.register(userData);
+    localStorage.setItem('livelihood_token', res.data.access_token);
+    localStorage.setItem('livelihood_user', JSON.stringify(res.data.user));
+    localStorage.setItem('livelihood_role', res.data.user.role);
     setToken(res.data.access_token);
     setCurrentUser(res.data.user);
     setCurrentRole(res.data.user.role);

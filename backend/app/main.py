@@ -137,6 +137,7 @@ limiter = _build_limiter()
 async def lifespan(app: FastAPI):
     # Ensure all SQLAlchemy model tables exist (idempotent — safe to run always).
     # Alembic manages catalog/scheme tables; create_all handles user/profile/progress tables.
+    import os
     from app.database.base import Base
     import app.models.user      # noqa: F401
     import app.models.profile   # noqa: F401
@@ -147,7 +148,7 @@ async def lifespan(app: FastAPI):
         Base.metadata.create_all(bind=engine)
         logger.info("SQLAlchemy create_all completed — all model tables are ready.")
 
-        # Ensure default administrator account is always provisioned
+        # Ensure default accounts are always provisioned
         from app.models.user import User
         from app.services.security import get_password_hash
         with Session(engine) as db:
@@ -166,14 +167,30 @@ async def lifespan(app: FastAPI):
                     is_active=True
                 )
                 db.add(new_admin)
-                db.commit()
                 logger.info(f"Default admin user initialized ({admin_email}).")
             else:
                 existing_admin.role = "admin"
                 existing_admin.hashed_password = get_password_hash(admin_pwd)
                 existing_admin.is_active = True
-                db.commit()
                 logger.info(f"Default admin user confirmed ({admin_email}).")
+
+            # Provision candidate demo account
+            cand_user = db.query(User).filter(User.email == "candidate@livelihood.ai").first()
+            if not cand_user:
+                db.add(User(
+                    email="candidate@livelihood.ai",
+                    hashed_password=get_password_hash("Password123!"),
+                    full_name="Lakshmi Priya",
+                    role="candidate",
+                    phone="+919876543210",
+                    preferred_language="ta",
+                    location="Madurai, Tamil Nadu",
+                    is_active=True
+                ))
+            else:
+                cand_user.hashed_password = get_password_hash("Password123!")
+
+            db.commit()
     except Exception as exc:
         logger.warning(f"Startup initialization encountered an issue (non-fatal): {exc}")
     logger.info("LivelihoodAI starting — catalog schema managed by Alembic.")

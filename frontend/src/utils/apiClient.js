@@ -78,7 +78,7 @@ export const apiClient = {
   // Authentication & Profile APIs
   login: async (identifier, password) => {
     const isEmail = identifier && identifier.includes('@');
-    return request('/api/v1/auth/login', {
+    const res = await request('/api/v1/auth/login', {
       method: 'POST',
       body: {
         email: isEmail ? identifier.trim() : undefined,
@@ -86,6 +86,14 @@ export const apiClient = {
         password
       }
     });
+    if (res?.data?.access_token) {
+      localStorage.setItem(AUTH_TOKEN_KEY, res.data.access_token);
+      if (res?.data?.user) {
+        localStorage.setItem('livelihood_user', JSON.stringify(res.data.user));
+        localStorage.setItem('livelihood_role', res.data.user.role || 'candidate');
+      }
+    }
+    return res;
   },
 
   register: async (userData) => {
@@ -96,18 +104,26 @@ export const apiClient = {
       }
       delete payload.email;
     }
-    return request('/api/v1/auth/register', {
+    const res = await request('/api/v1/auth/register', {
       method: 'POST',
       body: payload
     });
+    if (res?.data?.access_token) {
+      localStorage.setItem(AUTH_TOKEN_KEY, res.data.access_token);
+      if (res?.data?.user) {
+        localStorage.setItem('livelihood_user', JSON.stringify(res.data.user));
+        localStorage.setItem('livelihood_role', res.data.user.role || 'candidate');
+      }
+    }
+    return res;
   },
 
   getMe: async () => {
-    return request('/api/v1/auth/me');
+    return request('/api/v1/auth/me', { skipAuthRedirect: true });
   },
 
   getMyProfile: async () => {
-    return request('/api/v1/profile/me');
+    return request('/api/v1/profile/me', { skipAuthRedirect: true });
   },
 
   updateMyProfile: async (profileData) => {
