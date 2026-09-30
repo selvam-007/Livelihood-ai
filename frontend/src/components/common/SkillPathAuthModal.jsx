@@ -14,10 +14,7 @@ import {
   KeyRound,
   CheckCircle2, 
   AlertCircle,
-  Smartphone,
-  ShieldCheck,
-  Building2,
-  Users
+  ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { AuthHeroIllustration } from './HeroIllustrations';
@@ -146,28 +143,6 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
     }
   };
 
-  // Demo 1-Click Login Helper for each role
-  const handleDemoLogin = async (role) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const credentials = {
-        candidate: { email: 'selvamc01@gmail.com', password: 'CandidatePass123!' },
-        field_agent: { email: 'agent.kumar@livelihood.ai', password: 'AgentSecurePass123!' },
-        training_provider: { email: 'provider.tn@livelihood.ai', password: 'ProviderSecurePass123!' }
-      };
-      const cred = credentials[role];
-      if (cred) {
-        await loginWithCredentials(cred.email, cred.password);
-        onClose();
-      }
-    } catch (err) {
-      setError(`Demo login failed: ${err.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden max-w-4xl w-full flex flex-col md:flex-row border border-slate-200/80 max-h-[94vh]">
@@ -200,7 +175,7 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
           </div>
 
           {/* Center Heading & Illustration */}
-          <div className="relative z-10 my-3 space-y-2">
+          <div className="relative z-10 my-4 space-y-3">
             <h2 className="text-xl font-black leading-tight tracking-tight">
               From your voice <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400">
@@ -212,42 +187,15 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
               AI-driven skill diagnosis, multilingual voice pathways, and real-world multi-role workflows.
             </p>
 
-            <div className="w-full h-32 rounded-xl overflow-hidden pt-1">
+            <div className="w-full h-36 rounded-xl overflow-hidden pt-2">
               <AuthHeroIllustration className="w-full h-full" />
             </div>
           </div>
 
-          {/* Demo Role Fast-Switch */}
-          <div className="relative z-10 pt-3 border-t border-slate-800/80 space-y-1.5">
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-              Quick Demo Access
-            </span>
-            <div className="grid grid-cols-3 gap-1.5">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('candidate')}
-                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center justify-center gap-1.5 transition text-center"
-              >
-                <Users className="w-3 h-3 text-blue-400" />
-                <span>Candidate</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('field_agent')}
-                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center justify-center gap-1.5 transition text-center"
-              >
-                <Smartphone className="w-3 h-3 text-teal-400" />
-                <span>Field Agent</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('training_provider')}
-                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center justify-center gap-1.5 transition text-center"
-              >
-                <Building2 className="w-3 h-3 text-amber-400" />
-                <span>Provider</span>
-              </button>
-            </div>
+          {/* Bottom Security Assurance Badge */}
+          <div className="relative z-10 pt-4 border-t border-slate-800/80 flex items-center gap-2 text-slate-400 text-[11px]">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <span>Encrypted Authentication & Session Security</span>
           </div>
         </div>
 

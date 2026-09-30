@@ -146,8 +146,36 @@ async def lifespan(app: FastAPI):
     try:
         Base.metadata.create_all(bind=engine)
         logger.info("SQLAlchemy create_all completed — all model tables are ready.")
+
+        # Ensure default administrator account is always provisioned
+        from app.models.user import User
+        from app.services.security import get_password_hash
+        with Session(engine) as db:
+            admin_email = os.getenv("ADMIN_EMAIL", "admin@livelihood.ai").lower()
+            admin_pwd = os.getenv("ADMIN_PASSWORD", "AdminPass123!")
+            existing_admin = db.query(User).filter(User.email == admin_email).first()
+            if not existing_admin:
+                new_admin = User(
+                    email=admin_email,
+                    hashed_password=get_password_hash(admin_pwd),
+                    full_name="State Skilling Administrator",
+                    role="admin",
+                    phone="+919876543213",
+                    preferred_language="en",
+                    location="Chennai, Tamil Nadu",
+                    is_active=True
+                )
+                db.add(new_admin)
+                db.commit()
+                logger.info(f"Default admin user initialized ({admin_email}).")
+            else:
+                existing_admin.role = "admin"
+                existing_admin.hashed_password = get_password_hash(admin_pwd)
+                existing_admin.is_active = True
+                db.commit()
+                logger.info(f"Default admin user confirmed ({admin_email}).")
     except Exception as exc:
-        logger.warning(f"create_all encountered an issue (non-fatal): {exc}")
+        logger.warning(f"Startup initialization encountered an issue (non-fatal): {exc}")
     logger.info("LivelihoodAI starting — catalog schema managed by Alembic.")
     yield
     logger.info("LivelihoodAI shutting down.")

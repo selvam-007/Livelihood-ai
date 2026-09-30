@@ -247,26 +247,6 @@ export default function AuthModal({ isOpen, onClose }) {
                 : (lang === 'en' ? 'Already have an account? Sign In' : 'Already registered? Sign In')}
             </button>
           </div>
-
-          {/* 1-Click Demo Evaluation Credentials */}
-          <div className="pt-3 border-t border-slate-800 space-y-2">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-              ⚡ {getAuthStr('demoTitle', lang)}:
-            </span>
-            <div className="grid grid-cols-1 gap-2">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('candidate@livelihood.ai', 'Password123!')}
-                className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-left border border-slate-700 transition flex items-center justify-between"
-              >
-                <div>
-                  <div className="text-xs font-semibold text-emerald-300">Candidate Demo</div>
-                  <div className="text-[10px] text-slate-400">Lakshmi Priya</div>
-                </div>
-                <Sparkles className="w-4 h-4 text-emerald-400" />
-              </button>
-            </div>
-          </div>
         </form>
       </div>
     </div>
