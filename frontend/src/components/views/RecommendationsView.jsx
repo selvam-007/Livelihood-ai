@@ -34,8 +34,8 @@ import LoadingState from '../common/LoadingState';
 import EmptyState from '../common/EmptyState';
 import ErrorState from '../common/ErrorState';
 
-export default function RecommendationsView({ onSelectCourse, selectedCourseId, onBackToList, initialSubTab = 'courses' }) {
-  const { activeProfile } = useAuth();
+export default function RecommendationsView({ onSelectCourse, selectedCourseId, onBackToList, initialSubTab = 'courses', onNavigate, onOpenAuth }) {
+  const { currentUser, activeProfile } = useAuth();
   const { lang, t } = useLanguage();
   const r = t.recommendations || {};
 
@@ -82,9 +82,9 @@ export default function RecommendationsView({ onSelectCourse, selectedCourseId, 
         const skillsList = (activeProfile?.currentSkills || []).map(s => s.name || s.skill_name || s);
         const payload = {
           education: activeProfile?.education || "10th Standard",
-          prior_occupation: activeProfile?.priorOccupation || activeProfile?.goal || "general",
-          experience_years: parseFloat(activeProfile?.experienceYears || 1.0),
-          livelihood_goal: activeProfile?.goal?.toLowerCase().includes('business') || activeProfile?.goal?.toLowerCase().includes('shop') || activeProfile?.goal?.toLowerCase().includes('boutique') ? 'self-employment' : 'employment',
+          prior_occupation: activeProfile?.priorOccupation || activeProfile?.goal || "General",
+          experience_years: parseFloat(activeProfile?.experienceYears || 0.0),
+          livelihood_goal: activeProfile?.goal ? (activeProfile.goal.toLowerCase().includes('business') || activeProfile.goal.toLowerCase().includes('shop') || activeProfile.goal.toLowerCase().includes('boutique') ? 'self-employment' : 'employment') : 'employment',
           skills: skillsList,
           resources: activeProfile?.resources || [],
           constraints: activeProfile?.constraints || []
@@ -343,6 +343,45 @@ export default function RecommendationsView({ onSelectCourse, selectedCourseId, 
           <span>{r.tabRoadmap || 'Dynamic Roadmap'}</span>
         </button>
       </div>
+
+      {/* Guest / Un-assessed Learner Informational Banner */}
+      {(!currentUser || (activeProfile?.currentSkills || []).length === 0) && (
+        <div className="bg-amber-50/80 border border-amber-200/90 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-2xs animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="font-bold text-amber-900 block">
+                {!currentUser ? 'Displaying General National NSQF Catalog' : 'Showing Standard National Qualifications'}
+              </span>
+              <p className="text-amber-700 text-[11px] mt-0.5">
+                {!currentUser 
+                  ? 'Take the AI Voice Assessment or Sign In to match your unique vocational skills and see personalized gap analysis.' 
+                  : 'Complete a quick Voice Assessment to calculate your skill match percentage, missing competency hours, and tailored subsidies.'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('voice')}
+                className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs shadow-xs transition"
+              >
+                Voice Assessment
+              </button>
+            )}
+            {!currentUser && onOpenAuth && (
+              <button
+                onClick={() => onOpenAuth('login')}
+                className="px-3 py-1.5 rounded-lg bg-white border border-amber-300 hover:bg-amber-50 text-amber-900 font-semibold text-xs transition"
+              >
+                Sign In
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Loading State */}
       {loading && activeTab === 'courses' && (
@@ -875,7 +914,13 @@ export default function RecommendationsView({ onSelectCourse, selectedCourseId, 
       {/* SKILL CARD MODAL */}
       <SkillCardModal 
         isOpen={isSkillCardOpen} 
-        onClose={() => setIsSkillCardOpen(false)} 
+        onClose={() => setIsSkillCardOpen(false)}
+        candidate={{
+          name: currentUser?.full_name || (lang === 'ta' ? 'பயனாளர்' : 'Learner'),
+          education: activeProfile?.education || 'Vocational Learner',
+          skills: (activeProfile?.currentSkills || []).map(s => s.name || s)
+        }}
+        recommendation={selectedQp}
       />
     </div>
   );

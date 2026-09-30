@@ -223,32 +223,14 @@ export default function VoiceInputView({ onNavigate, onOpenGuidedModal }) {
     setIsRecording(false);
   };
 
-  // Sample prompt insertion matching active persona and language
+  // Sample prompt insertion matching selected language
   const getSamplePrompt = () => {
-    if (activeProfile?.id === 'cand-001' || activeProfile?.goal?.toLowerCase().includes('tailor')) {
-      if (lang === 'ta') {
-        return "நான் 12ஆம் வகுப்பு வரை படித்துள்ளேன். 2 ஆண்டுகள் தையல் மற்றும் கட்டிங் அனுபவம் உள்ளது. என்னிடம் தையல் இயந்திரம் உள்ளது. சொந்தமாக பொட்டிக் தொழில் தொடங்க விரும்புகிறேன்.";
-      } else if (lang === 'hi') {
-        return "मैंने 12वीं तक पढ़ाई की है और 2 साल का सिलाई व कटिंग का अनुभव है। मेरे पास सिलाई मशीन है और मैं अपना बुटीक व्यवसाय शुरू करना चाहती हूँ।";
-      }
-      return "I studied up to 12th standard and have 2 years of apparel stitching experience. I own a manual sewing machine and want to start my own home boutique.";
-    }
-
-    if (activeProfile?.id === 'cand-002' || activeProfile?.goal?.toLowerCase().includes('electrician')) {
-      if (lang === 'ta') {
-        return "நான் 10ஆம் வகுப்பு முடித்துள்ளேன். 1.5 ஆண்டுகள் வீட்டு வயரிங் உதவியாளராக பணிபுரிந்துள்ளேன். மல்டிமீட்டர் பயன்படுத்த தெரியும். அரசு சான்றிதழ் பெற்ற வயர்மேன் ஆக விரும்புகிறேன்.";
-      } else if (lang === 'hi') {
-        return "मैंने 10वीं पास की है और 1.5 साल से घरेलू वायरिंग और स्विचबोर्ड का काम सहायक के रूप में कर रहा हूँ। मैं प्रमाणित इलेक्ट्रीशियन बनना चाहता हूँ।";
-      }
-      return "I completed 10th standard and worked for 1.5 years as a helper on conduit wiring and switchboards. I want to become a certified wireman technician.";
-    }
-
     if (lang === 'ta') {
-      return "எனக்கு பைதான், HTML மற்றும் ஜாவாஸ்கிரிப்ட் மூலம் இணைய மேம்பாட்டில் 2 ஆண்டுகள் அனுபவம் உள்ளது. யுனிட்டியில் கேம் புரோட்டோடைப் செய்துள்ளேன். AI இன்ஜினியர் ஆவதே என் இலக்கு.";
+      return "நான் 10ஆம் வகுப்பு முடித்துள்ளேன். 1.5 ஆண்டுகள் மின்சார மற்றும் எலக்ட்ரிக்கல் வேலைகளில் உதவியாளராக பணிபுரிந்துள்ளேன். மல்டிமீட்டர் பயன்படுத்த தெரியும். அரசு சான்றிதழ் பெற்ற வயர்மேன் டெக்னீசியன் ஆக விரும்புகிறேன்.";
     } else if (lang === 'hi') {
-      return "मेरे पास पायथन और वेब डेवलपमेंट में 2 साल का अनुभव है। मैंने यूनिटी में गेम प्रोटोटाइप बनाए हैं। मेरा लक्ष्य एआई इंजीनियर बनना है।";
+      return "मैंने 10वीं पास की है और 1.5 साल से घरेलू वायरिंग और स्विचबोर्ड का काम सहायक के रूप में कर रहा हूँ। मैं प्रमाणित इलेक्ट्रीशियन बनना चाहता हूँ।";
     }
-    return "I have 2 years of experience in Python and web development with HTML and JavaScript. I've built personal projects and game prototypes in Unity. My goal is to become an AI Engineer.";
+    return "I completed 10th standard and worked for 1.5 years as a helper on conduit wiring and switchboards. I want to become a certified wireman technician.";
   };
 
   const handleUseSample = () => {

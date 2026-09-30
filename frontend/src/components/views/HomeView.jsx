@@ -165,17 +165,17 @@ export default function HomeView({ onNavigate, onOpenVoiceModal }) {
           <div>
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold">
-                {activeProfile.targetPathway?.nsqfLevel || 'NSQF Level 5'}
+                {activeProfile?.targetPathway?.nsqfLevel || 'NSQF National Grid'}
               </span>
               <span className="text-xs font-mono text-slate-400">
-                QP: {activeProfile.targetPathway?.qpCode || 'SSC/Q8102'}
+                {activeProfile?.targetPathway?.qpCode ? `QP: ${activeProfile.targetPathway.qpCode}` : 'Govt. of India Certified'}
               </span>
             </div>
             <h3 className="text-base sm:text-lg font-extrabold text-slate-900 mt-1.5">
-              {activeProfile.targetPathway?.title || 'Python for Data Science & AI Engineer'}
+              {activeProfile?.targetPathway?.title || 'Solar PV Project Helper & Installer (Suryamitra)'}
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              {activeProfile.targetPathway?.council || 'IT-ITeS Sector Skill Council (NASSCOM)'}
+              {activeProfile?.targetPathway?.council || 'Skill Council for Green Jobs (SCGJ)'}
             </p>
           </div>
 
@@ -183,13 +183,20 @@ export default function HomeView({ onNavigate, onOpenVoiceModal }) {
             <div className="text-right">
               <div className="text-xs text-slate-400">{h.estimatedEarning || 'Estimated Earning'}</div>
               <div className="text-sm font-bold text-emerald-600 font-mono">
-                {activeProfile.targetPathway?.potentialIncome || '₹35,000 - ₹55,000 / mo'}
+                {activeProfile?.targetPathway?.potentialIncome || '₹18,000 - ₹28,000 / mo'}
               </div>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 flex flex-col items-center justify-center shadow-2xs">
-              <span className="text-sm font-black text-blue-700">{activeProfile.targetPathway?.matchScore || 88}%</span>
-              <span className="text-[9px] font-bold text-blue-500 uppercase">{h.fit || 'Fit'}</span>
-            </div>
+            {activeProfile?.targetPathway?.matchScore ? (
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 flex flex-col items-center justify-center shadow-2xs">
+                <span className="text-sm font-black text-blue-700">{activeProfile.targetPathway.matchScore}%</span>
+                <span className="text-[9px] font-bold text-blue-500 uppercase">{h.fit || 'Fit'}</span>
+              </div>
+            ) : (
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col items-center justify-center shadow-2xs">
+                <Sparkles className="w-5 h-5 text-emerald-600" />
+                <span className="text-[8px] font-bold text-emerald-600 uppercase mt-0.5">Featured</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -197,29 +204,25 @@ export default function HomeView({ onNavigate, onOpenVoiceModal }) {
         <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-50 to-blue-50/40 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-0.5">
             <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">
-              {h.spotlightBadge || 'Recommended Pathway Action:'}
+              {activeProfile?.targetPathway ? (h.spotlightBadge || 'Recommended Pathway Action:') : 'National NSQF Spotlight:'}
             </span>
             <div className="text-xs sm:text-sm font-semibold text-slate-800">
-              {activeProfile.targetPathway?.nextAction || 'Enroll in Python for Data Science (3 Months, NSQF Level 5)'}
+              {activeProfile?.targetPathway?.nextAction || 'Explore accredited courses or take Voice Assessment to discover your personalized pathway'}
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <PathwayAudioPlayer
-              pathway={activeProfile.targetPathway || {
-                title: 'Python for Data Science & AI Engineer',
-                nsqfLevel: 'NSQF Level 5',
-                matchScore: 88,
-                council: 'IT-ITeS Sector Skill Council (NASSCOM)',
-                nextAction: 'Enroll in Python for Data Science (3 Months, NSQF Level 5)'
-              }}
-              buttonSize="large"
-            />
+            {activeProfile?.targetPathway && (
+              <PathwayAudioPlayer
+                pathway={activeProfile.targetPathway}
+                buttonSize="large"
+              />
+            )}
             <button
               onClick={() => onNavigate('courses')}
               className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-xs transition"
             >
-              <span>{h.viewAllCourses || 'View Courses'}</span>
+              <span>{h.viewAllCourses || 'Explore NSQF Pathways'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

@@ -181,7 +181,7 @@ function MainAppShell() {
                   )}
 
                   {activeTab === 'profile' && (
-                    <ProfileView onNavigate={handleNavigate} />
+                    <ProfileView onNavigate={handleNavigate} onOpenAuth={handleOpenAuth} />
                   )}
 
                   {(activeTab === 'recommendations' || activeTab === 'courses') && (
@@ -190,6 +190,8 @@ function MainAppShell() {
                       initialSubTab={activeTab === 'courses' ? 'courses' : recommendationsSubTab}
                       onSelectCourse={handleSelectCourse}
                       onBackToList={() => setSelectedCourseId(null)}
+                      onNavigate={handleNavigate}
+                      onOpenAuth={handleOpenAuth}
                     />
                   )}
 

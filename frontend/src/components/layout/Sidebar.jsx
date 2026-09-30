@@ -42,8 +42,8 @@ export default function Sidebar({
     { id: 'settings', label: s.settings || 'Settings', icon: Settings },
   ];
 
-  const candidateName = currentUser?.full_name || activeProfile?.name || 'Selvam C.';
-  const candidateEmail = currentUser?.email || (currentUser ? 'Authenticated User' : 'Guest / Demo Candidate');
+  const candidateName = currentUser?.full_name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Guest Candidate');
+  const candidateEmail = currentUser?.email || currentUser?.phone || 'Sign In to save skills';
 
   return (
     <>
@@ -181,7 +181,7 @@ export default function Sidebar({
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md ring-1 ring-white/20">
-                {candidateName.charAt(0).toUpperCase()}
+                {currentUser ? candidateName.charAt(0).toUpperCase() : <User className="w-4 h-4 text-white" />}
               </div>
               <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-[#090d1a] ${
                 isAdminUser ? 'bg-purple-500' : 'bg-emerald-500'

@@ -62,7 +62,7 @@ export default function TopNavbar({
     };
   }, []);
 
-  const candidateName = currentUser?.full_name || activeProfile?.name || 'Selvam C.';
+  const candidateName = currentUser?.full_name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Guest Learner');
 
   return (
     <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 px-4 sm:px-6 py-2.5 transition-all shadow-xs">

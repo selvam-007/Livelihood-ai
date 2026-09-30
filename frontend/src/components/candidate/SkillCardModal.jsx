@@ -21,17 +21,16 @@ export default function SkillCardModal({ isOpen, onClose, candidate, recommendat
     window.print();
   };
 
-  const candidateName = candidate?.name || "Anitha Selvam";
-  const occupation = recommendation?.qualification_name || candidate?.prior_occupation || "Self Employed Tailor";
-  const nsqfLevel = recommendation?.nsqf_level || "Level 4";
-  const sector = recommendation?.sector || "Apparel, Made-Ups & Home Furnishing";
-  const council = recommendation?.council || "AMHSSC";
-  const qpCode = recommendation?.qp_code || "AMH/Q1947";
-  const skills = candidate?.skills || [
-    "Basic Machine Stitching",
-    "Fabric Cutting & Marking",
-    "Digital Payments & UPI",
-    "Pattern Alteration"
+  const candidateName = candidate?.name || (lang === 'ta' ? 'பயனாளர்' : 'Candidate');
+  const occupation = recommendation?.qualification_name || candidate?.prior_occupation || "NSQF Livelihood Qualification";
+  const nsqfLevel = recommendation?.nsqf_level || "Level 3/4";
+  const sector = recommendation?.sector || "National Skill Qualification";
+  const council = recommendation?.council || "National Skill Development Corporation (NSDC)";
+  const qpCode = recommendation?.qp_code || "QP-IND-2024";
+  const skills = candidate?.skills?.length ? candidate.skills : [
+    "Core Vocational Knowledge",
+    "Workplace Safety & Standards",
+    "Digital Literacy"
   ];
 
   return (
