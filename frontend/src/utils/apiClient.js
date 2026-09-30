@@ -75,17 +75,29 @@ export const apiClient = {
   delete: (endpoint, headers) => request(endpoint, { method: 'DELETE', headers }),
 
   // Authentication & Profile APIs
-  login: async (email, password) => {
+  login: async (identifier, password) => {
+    const isEmail = identifier && identifier.includes('@');
     return request('/api/v1/auth/login', {
       method: 'POST',
-      body: { email, password }
+      body: {
+        email: isEmail ? identifier.trim() : undefined,
+        phone: !isEmail ? identifier.trim() : undefined,
+        password
+      }
     });
   },
 
   register: async (userData) => {
+    const payload = { ...userData };
+    if (payload.email && !payload.email.includes('@')) {
+      if (!payload.phone) {
+        payload.phone = payload.email.trim();
+      }
+      delete payload.email;
+    }
     return request('/api/v1/auth/register', {
       method: 'POST',
-      body: userData
+      body: payload
     });
   },
 
