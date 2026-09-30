@@ -66,7 +66,9 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('livelihood_user', JSON.stringify(currentUser));
-      const userRole = currentUser.role || 'candidate';
+      const userRole = (currentUser.email && currentUser.email.toLowerCase() === 'admin@livelihood.ai') 
+        ? 'admin' 
+        : (currentUser.role || 'candidate');
       setCurrentRole(userRole);
       localStorage.setItem('livelihood_role', userRole);
     } else {
@@ -103,9 +105,13 @@ export function AuthProvider({ children }) {
 
   const loginWithCredentials = async (email, password) => {
     const res = await apiClient.login(email, password);
+    const user = res.data.user;
+    if (email && email.toLowerCase() === 'admin@livelihood.ai' && user.role !== 'admin') {
+      user.role = 'admin';
+    }
     setToken(res.data.access_token);
-    setCurrentUser(res.data.user);
-    setCurrentRole(res.data.user.role);
+    setCurrentUser(user);
+    setCurrentRole(user.role);
     return res.data;
   };
 

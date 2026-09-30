@@ -199,6 +199,13 @@ def login_user(credentials: UserLogin, request: Request, db: Session = Depends(g
             detail="This account has been deactivated."
         )
 
+    # If this is the configured administrator email, guarantee admin privileges
+    admin_email = os.getenv("ADMIN_EMAIL", "admin@livelihood.ai").lower()
+    if user.email and user.email.lower() == admin_email and user.role != "admin":
+        user.role = "admin"
+        db.commit()
+        db.refresh(user)
+
     client_ip = request.client.host if request.client else None
     log_audit_event(
         db=db,
