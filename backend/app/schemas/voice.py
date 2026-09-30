@@ -26,15 +26,21 @@ class TranscribeRequest(BaseModel):
 
 
 class VoiceSessionAnswer(BaseModel):
-    question_id: int
-    question_key: str
-    user_transcript: str
+    question_id: Optional[int] = 1
+    question_key: Optional[str] = "story"
+    user_transcript: Optional[str] = ""
+    spoken_answer: Optional[str] = None
+    question_text: Optional[str] = None
     language: Optional[str] = "en"
+
+    def get_text(self) -> str:
+        return (self.user_transcript or self.spoken_answer or "").strip()
 
 
 class VoiceSessionSubmission(BaseModel):
-    answers: List[VoiceSessionAnswer]
+    answers: Optional[List[VoiceSessionAnswer]] = Field(default_factory=list)
     full_transcript: Optional[str] = None
+    session_id: Optional[str] = None
     language: Optional[str] = "en"
     user_id: Optional[int] = None
 
@@ -44,3 +50,16 @@ class VoiceSessionResult(BaseModel):
     questions_completed: int
     language: str
     extracted_summary: Dict[str, Any]
+    profile: Optional[Dict[str, Any]] = None
+    extracted_skills: Optional[List[str]] = Field(default_factory=list)
+    skills_extracted_detailed: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
+    recommended_role: Optional[str] = None
+    qp_code: Optional[str] = None
+    nsqf_level: Optional[str] = None
+    match_score: Optional[float] = None
+    suitability_explanation: Optional[str] = None
+    development_roadmap: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
+    development_summary: Optional[str] = None
+    skills_to_develop: Optional[List[str]] = Field(default_factory=list)
+    learning_actions: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
+    status: str = "success"

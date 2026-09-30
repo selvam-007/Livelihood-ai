@@ -82,3 +82,57 @@ def test_conversational_followup_tamil(client, candidate_token):
     data = response.json()["data"]
     assert len(data["followup_questions"]) == 2
     assert "கல்வித் தகுதி" in data["followup_questions"][0]["question"]
+
+
+def test_unauthenticated_voice_process_session_tamil(client):
+    """Verify that unauthenticated candidates can complete voice assessment without getting 401."""
+    payload = {
+        "language": "ta",
+        "full_transcript": "நான் 10ஆம் வகுப்பு முடித்துள்ளேன். 1.5 ஆண்டுகள் மின்சார வயரிங் வேலை செய்துள்ளேன். எலக்ட்ரீசியன் ஆக விரும்புகிறேன்.",
+        "answers": [
+            {
+                "question_id": 1,
+                "question_key": "education",
+                "user_transcript": "10-ஆம் வகுப்பு"
+            },
+            {
+                "question_id": 2,
+                "question_key": "skills",
+                "user_transcript": "மின்சார வேலை மற்றும் வயரிங்"
+            }
+        ]
+    }
+    # Notice: NO Authorization header is sent!
+    response = client.post("/api/v1/voice/process-session", json=payload)
+    assert response.status_code == 200, f"Expected 200 OK without auth, got {response.status_code}: {response.text}"
+    result = response.json()["data"]
+    assert result["status"] == "success"
+    assert result["recommended_role"] is not None
+    assert result["match_score"] > 50
+    # Must provide suitability explanation and development roadmap in Tamil
+    assert "பொருத்தமான" in result["suitability_explanation"] or "தொழில்" in result["suitability_explanation"]
+    assert len(result["development_roadmap"]) >= 3
+    assert len(result["skills_to_develop"]) > 0
+
+
+def test_unauthenticated_voice_process_session_hindi(client):
+    """Verify that Hindi voice assessment returns tailored Hindi guidance and roadmap."""
+    payload = {
+        "language": "hi",
+        "full_transcript": "मैंने 10वीं पास की है और 2 साल से सिलाई का काम कर रहा हूँ। खुद का टेलरिंग बुटीक शुरू करना चाहता हूँ।",
+        "answers": [
+            {
+                "question_id": 1,
+                "question_key": "skills",
+                "user_transcript": "सिलाई और कपड़े की कटाई"
+            }
+        ]
+    }
+    response = client.post("/api/v1/voice/process-session", json=payload)
+    assert response.status_code == 200
+    result = response.json()["data"]
+    assert result["status"] == "success"
+    assert result["recommended_role"] is not None
+    assert "आजीविका" in result["suitability_explanation"] or "कौशल" in result["suitability_explanation"]
+    assert len(result["development_roadmap"]) >= 3
+

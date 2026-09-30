@@ -1,4 +1,4 @@
-﻿import os
+import os
 import logging
 from fastapi import APIRouter, HTTPException, status, UploadFile, File, Form, Depends, Path
 from sqlalchemy.orm import Session
@@ -27,8 +27,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/voice",
-    tags=["Voice Assessment & Speech Pipeline"],
-    dependencies=[Depends(get_current_user)]
+    tags=["Voice Assessment & Speech Pipeline"]
 )
 
 

@@ -46,10 +46,11 @@ async function request(endpoint, options = {}) {
     if (!res.ok) {
       // Automatic 401 Unauthorized handling: evict stale token and notify application
       if (res.status === 401) {
+        const hadToken = !!localStorage.getItem(AUTH_TOKEN_KEY);
         localStorage.removeItem(AUTH_TOKEN_KEY);
         localStorage.removeItem('livelihood_user');
         localStorage.removeItem('livelihood_role');
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && hadToken && !options.skipAuthRedirect) {
           window.dispatchEvent(new CustomEvent('auth:unauthorized'));
         }
       }
@@ -204,14 +205,16 @@ export const apiClient = {
   processVoiceSession: async (sessionData) => {
     return request('/api/v1/voice/process-session', {
       method: 'POST',
-      body: sessionData
+      body: sessionData,
+      skipAuthRedirect: true
     });
   },
 
   getConversationalFollowups: async (unresolvedFields, language = 'en') => {
     return request('/api/v1/voice/conversational-followup', {
       method: 'POST',
-      body: { unresolved_fields: unresolvedFields, language }
+      body: { unresolved_fields: unresolvedFields, language },
+      skipAuthRedirect: true
     });
   },
 
@@ -226,7 +229,8 @@ export const apiClient = {
   analyzeAssessment: async (payload) => {
     return request('/api/v1/assessment/analyze', {
       method: 'POST',
-      body: payload
+      body: payload,
+      skipAuthRedirect: true
     });
   },
 
