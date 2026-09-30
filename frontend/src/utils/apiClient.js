@@ -4,11 +4,16 @@
  * robust network error handling, 401 unauthorized auto-logout, and typed helper methods.
  */
 
-const BASE_URL = import.meta.env.VITE_API_URL || '';
+const RAW_BASE_URL = import.meta.env.VITE_API_URL || '';
+const BASE_URL = RAW_BASE_URL.replace(/\/+$/, '');
 export const AUTH_TOKEN_KEY = 'livelihood_token';
 
 async function request(endpoint, options = {}) {
-  const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
+  let url = endpoint;
+  if (!endpoint.startsWith('http')) {
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    url = `${BASE_URL}${cleanEndpoint}`;
+  }
 
   const headers = {
     'Content-Type': 'application/json',

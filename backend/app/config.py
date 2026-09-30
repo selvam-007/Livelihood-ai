@@ -20,8 +20,10 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
 
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./livelihood_ai.db")
-    ALLOWED_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000")
+    ALLOWED_ORIGINS: str = os.getenv(
+        "ALLOWED_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,https://livelihood-ai.vercel.app"
+    )
 
     # Redis for rate limiting (optional — falls back to in-memory if not set)
     REDIS_URL: str = os.getenv("REDIS_URL", "")
