@@ -137,52 +137,43 @@ export default function Sidebar({
             );
           })}
 
-          {/* Dedicated Protected Administrative Section */}
-          <div className="pt-4 mt-4 border-t border-slate-800/70 space-y-1">
-            <div className="px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-              <ShieldCheck className="w-3 h-3" />
-              <span>Admin & Evaluation</span>
-            </div>
-
-            <button
-              onClick={() => {
-                if (isAdminUser) {
-                  onSelectTab('admin');
-                } else {
-                  if (onRequireAdminAuth) onRequireAdminAuth();
-                }
-                if (onCloseMobile) onCloseMobile();
-              }}
-              className={`
-                w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group border
-                ${currentRole === 'admin' && isAdminUser
-                  ? 'bg-gradient-to-r from-purple-700 to-indigo-600 text-white font-bold shadow-lg shadow-purple-600/30 ring-1 ring-purple-400/50 border-purple-500/50'
-                  : 'bg-purple-950/20 text-purple-300 border-purple-900/40 hover:bg-purple-900/30 hover:text-white'
-                }
-              `}
-              title={isAdminUser ? "Open Admin State Dashboard" : "Admin credentials required to view this section"}
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${
-                  currentRole === 'admin' ? 'bg-white/20 text-white' : 'bg-purple-500/10 text-purple-400 group-hover:bg-purple-500/20'
-                }`}>
-                  {isAdminUser ? <BarChart3 className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5 text-amber-400" />}
-                </div>
-                <span>{s.admin || 'Admin Intelligence'}</span>
+          {/* Dedicated Protected Administrative Section - ONLY visible to verified Admin users */}
+          {isAdminUser && (
+            <div className="pt-4 mt-4 border-t border-slate-800/70 space-y-1">
+              <div className="px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+                <ShieldCheck className="w-3 h-3" />
+                <span>Admin & Evaluation</span>
               </div>
 
-              {isAdminUser ? (
+              <button
+                onClick={() => {
+                  onSelectTab('admin');
+                  if (onCloseMobile) onCloseMobile();
+                }}
+                className={`
+                  w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group border
+                  ${currentRole === 'admin'
+                    ? 'bg-gradient-to-r from-purple-700 to-indigo-600 text-white font-bold shadow-lg shadow-purple-600/30 ring-1 ring-purple-400/50 border-purple-500/50'
+                    : 'bg-purple-950/20 text-purple-300 border-purple-900/40 hover:bg-purple-900/30 hover:text-white'
+                  }
+                `}
+                title="Open Admin State Dashboard"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${
+                    currentRole === 'admin' ? 'bg-white/20 text-white' : 'bg-purple-500/10 text-purple-400 group-hover:bg-purple-500/20'
+                  }`}>
+                    <BarChart3 className="w-3.5 h-3.5" />
+                  </div>
+                  <span>{s.admin || 'Admin Intelligence'}</span>
+                </div>
+
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-900/80 text-purple-200 border border-purple-700">
                   Active
                 </span>
-              ) : (
-                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800/60 flex items-center gap-1">
-                  <Lock className="w-2.5 h-2.5" />
-                  <span>Login</span>
-                </span>
-              )}
-            </button>
-          </div>
+              </button>
+            </div>
+          )}
         </nav>
 
         {/* User Status / Account Footer */}

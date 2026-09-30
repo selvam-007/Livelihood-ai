@@ -253,23 +253,17 @@ export default function AuthModal({ isOpen, onClose }) {
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
               ⚡ {getAuthStr('demoTitle', lang)}:
             </span>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               <button
                 type="button"
                 onClick={() => handleDemoLogin('candidate@livelihood.ai', 'Password123!')}
-                className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-left border border-slate-700 transition"
+                className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-left border border-slate-700 transition flex items-center justify-between"
               >
-                <div className="text-xs font-semibold text-emerald-300">Candidate Demo</div>
-                <div className="text-[10px] text-slate-400">Lakshmi Priya</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('admin@livelihood.ai', 'AdminPass123!')}
-                className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-left border border-slate-700 transition"
-              >
-                <div className="text-xs font-semibold text-purple-300">Admin Demo</div>
-                <div className="text-[10px] text-slate-400">State Analytics</div>
+                <div>
+                  <div className="text-xs font-semibold text-emerald-300">Candidate Demo</div>
+                  <div className="text-[10px] text-slate-400">Lakshmi Priya</div>
+                </div>
+                <Sparkles className="w-4 h-4 text-emerald-400" />
               </button>
             </div>
           </div>

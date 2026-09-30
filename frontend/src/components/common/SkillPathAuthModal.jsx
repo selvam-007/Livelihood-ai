@@ -48,13 +48,7 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
   const [isAdminMode, setIsAdminMode] = useState(false);
 
   useEffect(() => {
-    if (initialMode === 'admin') {
-      setAuthType('password');
-      setMode('login');
-      setIsAdminMode(true);
-      setEmailOrPhone('admin@livelihood.ai');
-      setPassword('AdminSecurePass123!');
-    } else if (initialMode === 'login' || initialMode === 'register') {
+    if (initialMode === 'login' || initialMode === 'register') {
       setAuthType('password');
       setMode(initialMode);
       setIsAdminMode(false);
@@ -160,8 +154,7 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
       const credentials = {
         candidate: { email: 'selvamc01@gmail.com', password: 'CandidatePass123!' },
         field_agent: { email: 'agent.kumar@livelihood.ai', password: 'AgentSecurePass123!' },
-        training_provider: { email: 'provider.tn@livelihood.ai', password: 'ProviderSecurePass123!' },
-        admin: { email: 'admin@livelihood.ai', password: 'AdminSecurePass123!' }
+        training_provider: { email: 'provider.tn@livelihood.ai', password: 'ProviderSecurePass123!' }
       };
       const cred = credentials[role];
       if (cred) {
@@ -229,11 +222,11 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
             <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
               Quick Demo Access
             </span>
-            <div className="grid grid-cols-2 gap-1.5">
+            <div className="grid grid-cols-3 gap-1.5">
               <button
                 type="button"
                 onClick={() => handleDemoLogin('candidate')}
-                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center gap-1.5 transition text-left"
+                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center justify-center gap-1.5 transition text-center"
               >
                 <Users className="w-3 h-3 text-blue-400" />
                 <span>Candidate</span>
@@ -241,7 +234,7 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
               <button
                 type="button"
                 onClick={() => handleDemoLogin('field_agent')}
-                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center gap-1.5 transition text-left"
+                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center justify-center gap-1.5 transition text-center"
               >
                 <Smartphone className="w-3 h-3 text-teal-400" />
                 <span>Field Agent</span>
@@ -249,18 +242,10 @@ export default function SkillPathAuthModal({ isOpen, onClose, initialMode = 'otp
               <button
                 type="button"
                 onClick={() => handleDemoLogin('training_provider')}
-                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center gap-1.5 transition text-left"
+                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center justify-center gap-1.5 transition text-center"
               >
                 <Building2 className="w-3 h-3 text-amber-400" />
                 <span>Provider</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('admin')}
-                className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium text-slate-200 flex items-center gap-1.5 transition text-left"
-              >
-                <ShieldCheck className="w-3 h-3 text-rose-400" />
-                <span>Admin</span>
               </button>
             </div>
           </div>
